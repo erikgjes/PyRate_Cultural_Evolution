@@ -6,7 +6,8 @@ plot_LTT<-function(x,y){
   z<-max(a)-(a)
   vn<-1:n
   f<-log(vn+1) ~ z
-  plot(f,xlab="Time \n (0 is Most Recent)", ylab="Log of Lineages",type="l",xaxt="n",col="dodgerblue",lwd=2)
+  plot(f,xlab="Time \n (0 is Most Recent)", ylab="Log of Lineages",type="l",xaxt="n",col="dodgerblue",lwd=2,
+       main="Log Lineage \n Through Time")
   year.labels<-seq(round(min(z),digits=0),round(max(z),digits=0),by=y)
   axis(1,at=seq(0,round(max(z),digits=0),by=y),labels=rev(year.labels))
   segments(min(z),min(log(vn+1)),max(z),max(log(vn+1)),lty=2)
@@ -17,7 +18,7 @@ lifespan_hist<-function(x,y){
   lifespans <-x %>% group_by(species) %>% summarize(lifespan=mean(ts)-mean(te))
   #lifespans <- lifespans %>% group_by(species,lifespan) %>% data.frame(species=species,lifespan=lifespan)
   hist(lifespans$lifespan,breaks=seq(floor(min(lifespans$lifespan)),ceiling(max(lifespans$lifespan))),
-       right=TRUE,xlab="Lifespans",main="",xaxt="n")
+       right=TRUE,xlab="Lifespans",main="Histogram of \n Lifespans",xaxt="n")
   lifespan.labels<-seq(round(min(lifespans$lifespan)),round(max(lifespans$lifespan)),by=y)
   axis(1,at=seq(round(min(lifespans$lifespan)),round(max(lifespans$lifespan)),by=y),labels=lifespan.labels)
 }
@@ -28,7 +29,7 @@ average_lifespan<-function(x,y){
   average_lifespan<-rounded %>% group_by(round_ts) %>% summarize(diff=mean(ts)-mean(te))
   z<-average_lifespan$round_ts
   plot(average_lifespan,xlab="Time \n (0 is Most Recent)", ylab="Mean Lifespan",col="dodgerblue",lwd=2,
-       type="l",xaxt="n",xlim=c(max(z),min(z)))
+       type="l",xaxt="n",main="Average Lifespan \n through Time",xlim=c(max(z),min(z)))
   year.labels<-seq(floor(min(z)),ceiling(max(z)),by=y)
   axis(1,at=seq(floor(min(z)),ceiling(max(z)),by=y),labels=year.labels)
 }
@@ -39,7 +40,7 @@ diversity_time<-function(x,y){
   x$te<-round(x$te,digits=0)
   ts.counts<-x %>% group_by(ts) %>% summarize(total_ts=n_distinct(species)) %>% mutate(cumsum = cumsum(total_ts)) %>% mutate(ID=ts)
   plot(ts.counts$ts,ts.counts$cumsum,type="l",xlab="Time \n (0 is Most Recent)",col="dodgerblue",lwd=2,
-       ylab="Cumulative Diversity",xaxt="n")
+       ylab="Cumulative Diversity",xaxt="n",main="Cumulative Diversity \n Through Time")
   year.labels<-seq(floor(min(ts.counts$ts)),ceiling(max(ts.counts$ts)),by=y)
   axis(1,at=seq(floor(min(ts.counts$ts)),ceiling(max(ts.counts$ts)),by=y),labels=rev(year.labels))
 }
@@ -84,15 +85,15 @@ pyrate_fixed<-function(x){
 }
 
 pyrate_preservation<-function(x){
+  colnames(x)<-c("make","model","first_year","last_year")
   x$status<-"extinct"
   x$status[which(x$last_year>=max(x$last_year))]<-"extant"
-  preservation_pyrate_data<<-data.frame(Species=x[,2],
+  x$number<-as.numeric(factor(x$model))
+  x <- x %>% group_by(model) %>% mutate(new2 = if(n( ) > 1) {paste(model, row_number( ),sep="_")} else {paste0(model)})
+  preservation_pyrate_data<<-data.frame(Species=x$new2,
                                         Status=x$status,
                                         min_age=max(x$last_year)-x$last_year,
                                         max_age=max(x$last_year)-x$first_year)
   write.table(preservation_pyrate_data,"~/Desktop/PyRate_CE_Tutorial/preservation_pyrate_data.txt",sep="\t",quote=FALSE,row.names=FALSE)
   }
-
-
-
 
