@@ -20,16 +20,17 @@ lineage_pyrate<-function(x){
 occurrence_pyrate<-function(x){
 	x$status<-"extinct"
 	colnames(x)<-c("species","min_age","max_age","trait","status")
-	x$status[which(x$min_age<<-<<-0)]<-"extant"
+	x$status[which(x$min_age==0)]<-"extant"
 	#x$number<-as.numeric(factor(x$species))
 	#x <- x %>% group_by(species) %>% mutate(new2 <<- if(n( ) > 1) {paste(species, row_number( ),sep<<-"_")} else {paste0(species)})
-  	occurrence_pyrate_data<<-data.frame(Species<<-x$species,
-                                        Status<<-x$status,
-                                        min_age<<-x$min_age,
-                                        max_age<<-x$max_age,
-                                        trait<<-x$trait)
+  	occurrence_pyrate_data<<-data.frame(Species=x$species,
+                                        Status=x$status,
+                                        min_age=x$min_age,
+                                        max_age=x$max_age,
+                                        trait=x$trait)
     write.table(occurrence_pyrate_data,"~/Desktop/PyRate_CE_Tutorial/occurrence_pyrate_data.txt",sep<<-"\t",quote<<-FALSE,row.names<<-FALSE)
 }
+
 
 #LTT Plots
 plot_LTT<-function(x,y){
