@@ -55,10 +55,10 @@ plot_LTT_occurrence<-function(x,y){
   z<-max(a)-(a)
   vn<-1:n
   f<-log(vn+1) ~ z
-  plot(f,xlab<-"Time \n (0 is Most Recent)", ylab="Log of speciess",type="l",xaxt="n",col="dodgerblue",lwd=2,
+  plot(f,xlab="Time \n (0 is Most Recent)", ylab="Log of speciess",type="l",xaxt="n",col="dodgerblue",lwd=2,
        main="Log species \n Through Time")
   year.labels<-seq(round(min(z),digits=0),round(max(z),digits=0),by=y)
-  axis(1,at<-seq(0,round(max(z),digits=0),by=y),labels=rev(year.labels))
+  axis(1,at=seq(0,round(max(z),digits=0),by=y),labels=rev(year.labels))
   segments(min(z),min(log(vn+1)),max(z),max(log(vn+1)),lty=2)
 }
 
