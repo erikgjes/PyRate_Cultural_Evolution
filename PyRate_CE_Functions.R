@@ -24,7 +24,7 @@ occurrence_pyrate<-function(x){
 	x$status[which(x$min_age==0)]<-"extant"
 	#x$number<-as.numeric(factor(x$species))
 	#x <- x %>% group_by(species) %>% mutate(new2 = if(n( ) > 1) {paste(species, row_number( ),sep="_")} else {paste0(species)})
-  	occurrence_pyrate_data=data.frame(Species=x$species,
+  	occurrence_pyrate_data<<-data.frame(Species=x$species,
                                         Status=x$status,
                                         min_age=x$min_age,
                                         max_age=x$max_age,
