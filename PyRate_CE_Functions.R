@@ -1,7 +1,7 @@
 lineage_pyrate<-function(x){
   x.1<-x
   colnames(x.1)<-c("clade","species","min_age","max_age")
-  species_pyrate_data<-data.frame(clade=as.numeric(factor(x.1$clade)),
+  species_pyrate_data<<-data.frame(clade=as.numeric(factor(x.1$clade)),
                                species=as.numeric(factor(x.1$species)),
                                ts=(max(x.1$max_age)-x.1$min_age),
                                te=(max(x.1$max_age)-x.1$max_age))
